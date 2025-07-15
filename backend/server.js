@@ -66,12 +66,12 @@ app.get('/callback', (req, res) => {
         console.log(accessToken + "\n\n" + refreshToken);
         //res.redirect(`../dashboard/?access_token=${accessToken}&refresh_token=${refreshToken}`);
 
-        setInterval(spotifyApi.refreshAccessToken().then(data => {
+        /* setInterval(spotifyApi.refreshAccessToken().then(data => {
             console.log('The access token has been refreshed!');
             spotifyApi.setAccessToken(data.body['access_token']);
         }).catch(error => {
             console.log('Could not refresh access token: ', error);
-        }), expiresIn / 2*1000);
+        }), expiresIn / 2*1000); */
     }).catch(error => {
         console.error('\nError authorizationCodeGrant: ', error);
         res.send('Error getting token.')
