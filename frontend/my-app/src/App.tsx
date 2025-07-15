@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import axios from 'axios';
 import './App.css';
+import Auth from './Auth';
 
 function App() {
 
@@ -19,6 +20,9 @@ function App() {
     <div className="App">
       <button onClick={getResponse}>Test server</button>
       <p>{serverResponse}</p>
+      <br />
+      <br />
+      <Auth></Auth>
     </div>
   );
 }
