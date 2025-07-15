@@ -8,17 +8,17 @@ app.use(cors({
 }))
 //const https = require('https')
 //const router = app.router
-const SpotifyWebApi = require('spotify-web-api-node')
 
 const port = process.env.PORT || 8080
+const redirect = process.env.REDIRECT || 'https://localhost:8080/callback'
 
+const SpotifyWebApi = require('spotify-web-api-node')
 const spotifyApi = new SpotifyWebApi({
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    redirectUri: 'https://music-forum.onrender.com/callback'
+    redirectUri: redirect
 });
 
-const MY_ACCESS_TOKEN = 'MY_ACCESS_TOKEN';
 
 app.get('/', (req, res) => {
     
@@ -64,17 +64,7 @@ app.get('/callback', (req, res) => {
         spotifyApi.setRefreshToken(refreshToken);
 
         console.log(accessToken + "\n\n" + refreshToken);
-        //res.redirect(`../dashboard/?access_token=${accessToken}&refresh_token=${refreshToken}`);
-
-        /* setInterval(spotifyApi.refreshAccessToken().then(data => {
-            console.log('The access token has been refreshed!');
-            spotifyApi.setAccessToken(data.body['access_token']);
-        }).catch(error => {
-            console.log('Could not refresh access token: ', error);
-        }), expiresIn / 2*1000); */
-    }).catch(error => {
-        console.error('\nError authorizationCodeGrant: ', error);
-        res.send('Error getting token.')
+        res.redirect(`../?access_token=${accessToken}&refresh_token=${refreshToken}`); // FIX THIS
     })
 });
 
