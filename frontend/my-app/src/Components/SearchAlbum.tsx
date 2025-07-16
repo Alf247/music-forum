@@ -12,11 +12,16 @@ function SearchAlbum() {
         const value = e.target.value
         setInput(value)
 
-        axios.get('/albums', { params: { album: input} }).then(res => {
-            setResults(res.data.albums.items)
-        }).catch(err => {
-            console.error('Error getting /album: ' + err)
-        })
+        if (input === '') {
+            setResults([])
+        } else {
+            axios.get('/albums', { params: { album: value} }).then(res => {
+                setResults(res.data.albums.items)
+            }).catch(err => {
+                console.error('Error getting /album: ' + err)
+            })
+        }
+
     }
 
     const handleSelect = (item: string) => {
@@ -31,7 +36,7 @@ function SearchAlbum() {
         <>
             <input 
             type="text"
-            placeholder={input}
+            value={input}
             onChange={handleChange} />
             <ul>
                 {results.map(item => (
