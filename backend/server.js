@@ -100,7 +100,7 @@ app.get('/me', (req, res) => {
 app.get('/albums', (req, res) => {
     const album = req.query.album
 
-    spotifyApi.searchAlbums(album, {limit: 5, offset: 1}).then(data => {
+    spotifyApi.searchAlbums(album, {limit: 10, offset: 0}).then(data => {
         res.send(data.body)
     }).catch(err => {
         console.error('Error getting albums: ', err)
