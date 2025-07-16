@@ -1,3 +1,5 @@
+import pool from './database'
+
 const express = require('express')
 const cors = require('cors')
 const app = express()
@@ -28,6 +30,10 @@ app.get('/', (req, res) => {
     }
     
     res.send("This is the response from the server.")
+})
+
+app.get('/isauth', (req, res) => {
+    res.send(spotifyApi.getAccessToken() ? true : false)
 })
 
 app.get('/auth', (req, res) => {
