@@ -73,7 +73,7 @@ app.get('/callback', (req, res) => {
         console.log('ACCESS TOKEN GET METHOD RETURNED: ' + spotifyApi.getAccessToken())
 
         //res.redirect(`../?access_token=${accessToken}&refresh_token=${refreshToken}`); // FIX THIS
-        res.redirect('../')
+        res.redirect('localhost:3000/')
     })
 });
 
