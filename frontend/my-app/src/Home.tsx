@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import Me from "./Me";
 
 
 function Home() {
@@ -17,6 +18,8 @@ function Home() {
     return (
         <>
             <a href="/auth">Click this to authorize your Spotify account.</a>
+            <br />
+            <Me></Me>
             <br />
             <button onClick={getResponse}>Test server</button>
             <p>{serverResponse}</p>
