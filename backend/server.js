@@ -1,4 +1,4 @@
-import pool from './database'
+import pool from './database.js'
 
 const express = require('express')
 const cors = require('cors')
