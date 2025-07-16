@@ -1,6 +1,6 @@
+// BACKEND
 const express = require('express')
 const cors = require('cors')
-const pool = require('../backend/modules/database.js')
 const app = express()
 
 app.use(cors({
@@ -8,9 +8,8 @@ app.use(cors({
     credentials: true
 }))
 
-const port = process.env.PORT || 8080
-const redirect = process.env.REDIRECT || 'https://localhost:8080/callback'
 
+// SPOTIFY API
 const SpotifyWebApi = require('spotify-web-api-node')
 const spotifyApi = new SpotifyWebApi({
     clientId: process.env.CLIENT_ID,
@@ -18,9 +17,16 @@ const spotifyApi = new SpotifyWebApi({
     redirectUri: redirect
 });
 
+
+// DATABASE
+const pool = require('../backend/modules/database.js')
 const query = require('../backend/modules/query.js')
 
 
+const port = process.env.PORT || 8080
+const redirect = process.env.REDIRECT || 'https://localhost:8080/callback'
+
+// ROUTES
 app.get('/', (req, res) => {
 
     // Checks if access token is still valid
@@ -87,6 +93,7 @@ app.get('/me', (req, res) => {
         console.error('Error getting "me": ' + err)
     })
 })
+
 
 app.listen(port, () => {
     console.log("Server started!")
