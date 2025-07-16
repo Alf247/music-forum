@@ -62,8 +62,13 @@ app.get('/callback', (req, res) => {
 
         spotifyApi.setAccessToken(accessToken);
         spotifyApi.setRefreshToken(refreshToken);
-
+        
         console.log(accessToken + "\n\n" + refreshToken);
+        
+        res.json({
+            access_token: accessToken
+        })
+
         res.redirect(`../?access_token=${accessToken}&refresh_token=${refreshToken}`); // FIX THIS
     })
 });
