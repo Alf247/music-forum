@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
     // Checks if access token is still valid
     if (!spotifyApi.getAccessToken()) {
 
-        res.redirect('/auth')
+        res.redirect('http://localhost:3000/auth')
 
     }
     
