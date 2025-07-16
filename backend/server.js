@@ -44,9 +44,6 @@ app.get('/callback', (req, res) => {
     const code = req.query.code
     const state = req.query.state
 
-    console.log(req.query)
-    console.log(req.data)
-
     if (!code) {
         console.error('No authorization code received.')
         return res.status(400).send('Authorization code is missing.')
