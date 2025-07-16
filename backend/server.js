@@ -2,6 +2,7 @@
 const express = require('express')
 const cors = require('cors')
 const app = express()
+const port = process.env.PORT || 8080
 
 app.use(cors({
     origin: 'http://localhost:3000',
@@ -11,6 +12,7 @@ app.use(cors({
 
 // SPOTIFY API
 const SpotifyWebApi = require('spotify-web-api-node')
+const redirect = process.env.REDIRECT || 'https://localhost:8080/callback'
 const spotifyApi = new SpotifyWebApi({
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
@@ -23,8 +25,6 @@ const pool = require('../backend/modules/database.js')
 const query = require('../backend/modules/query.js')
 
 
-const port = process.env.PORT || 8080
-const redirect = process.env.REDIRECT || 'https://localhost:8080/callback'
 
 // ROUTES
 // AUTHENTICATION
