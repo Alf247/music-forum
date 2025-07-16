@@ -1,5 +1,3 @@
-import * as query from '../backend/modules/query.js'
-
 const express = require('express')
 const cors = require('cors')
 const pool = require('../backend/modules/database.js')
@@ -19,6 +17,8 @@ const spotifyApi = new SpotifyWebApi({
     clientSecret: process.env.CLIENT_SECRET,
     redirectUri: redirect
 });
+
+const query = require('../backend/modules/query.js')
 
 
 app.get('/', (req, res) => {
