@@ -1,3 +1,5 @@
+import * as query from '../backend/modules/query.js'
+
 const express = require('express')
 const cors = require('cors')
 const pool = require('../backend/database.js')
