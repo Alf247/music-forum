@@ -40,36 +40,40 @@ app.get('/auth', (req, res) => {
 
 app.get('/callback', (req, res) => {
     console.log(req.query)
-    const error = req.query.error;
-    const code = req.query.code;
-    const state = req.query.state;
+    const error = req.query.error
+    const code = req.query.code
+    const state = req.query.state
+
+    console.log(req.query)
+    console.log(req.data)
 
     if (!code) {
-        console.error('No authorization code received.');
-        return res.status(400).send('Authorization code is missing.');
+        console.error('No authorization code received.')
+        return res.status(400).send('Authorization code is missing.')
     }    
 
     if (error) {
-        console.error('Error when getting callback: ', error);
+        console.error('Error when getting callback: ', error)
         res.send(`Error when getting callback: ${error}`)       // Preventes end-point from constantly waiting
         return;
     }
 
     spotifyApi.authorizationCodeGrant(code).then(data => {
-        const accessToken = data.body['access_token'];
-        const refreshToken = data.body['refresh_token'];
-        const expiresIn = data.body['expires_in'];
+        const accessToken = data.body['access_token']
+        const refreshToken = data.body['refresh_token']
+        const expiresIn = data.body['expires_in']
 
-        spotifyApi.setAccessToken(accessToken);
-        spotifyApi.setRefreshToken(refreshToken);
-        
-        console.log(accessToken + "\n\n" + refreshToken);
-        
-        res.json({
-            access_token: accessToken
-        })
+        console.log('The token expires in ' + expiresIn)
+        console.log('The access token is ' + accessToken)
+        console.log('The refresh token is ' + refreshToken)
 
-        res.redirect(`../?access_token=${accessToken}&refresh_token=${refreshToken}`); // FIX THIS
+        spotifyApi.setAccessToken(accessToken)
+        spotifyApi.setRefreshToken(refreshToken)
+
+        console.log('ACCESS TOKEN GET METHOD RETURNED: ' + spotifyApi.getAccessToken())
+
+        //res.redirect(`../?access_token=${accessToken}&refresh_token=${refreshToken}`); // FIX THIS
+        res.redirect('../')
     })
 });
 
