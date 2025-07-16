@@ -74,6 +74,15 @@ app.get('/callback', (req, res) => {
     })
 });
 
+app.get('/me', (req, res) => {
+    spotifyApi.getMe().then(data => {
+        console.log('[SEND] Information about authenticated user: ' + data.body)
+        res.send(data.body)
+    }).catch(err => {
+        console.error('Error getting "me": ' + err)
+    })
+})
+
 app.listen(port, () => {
     console.log("Server started!")
 })
