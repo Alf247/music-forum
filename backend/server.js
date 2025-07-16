@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
     // Checks if access token is still valid
     if (!spotifyApi.getAccessToken()) {
         console.log('Access token not found')
-        res.redirect('http://localhost:3000/auth')
+        res.redirect('http://localhost:3000/auth') // Fix this line
 
     }
     
