@@ -27,6 +27,7 @@ const port = process.env.PORT || 8080
 const redirect = process.env.REDIRECT || 'https://localhost:8080/callback'
 
 // ROUTES
+// AUTHENTICATION
 app.get('/', (req, res) => {
 
     // Checks if access token is still valid
@@ -85,6 +86,8 @@ app.get('/callback', (req, res) => {
     })
 });
 
+
+// GENERAL
 app.get('/me', (req, res) => {
     spotifyApi.getMe().then(data => {
         console.log('[SEND] Information about authenticated user: ' + data)
@@ -92,6 +95,20 @@ app.get('/me', (req, res) => {
     }).catch(err => {
         console.error('Error getting "me": ' + err)
     })
+})
+
+app.get('/albums', (req, res) => {
+    const album = req.query.album
+
+    spotifyApi.searchAlbums(album, {limit: 5, offset: 1}).then(data => {
+        res.send(data.body)
+    }).catch(err => {
+        console.error('Error getting albums: ', err)
+    })
+})
+
+app.post('/submit', (req, res) => {
+
 })
 
 
