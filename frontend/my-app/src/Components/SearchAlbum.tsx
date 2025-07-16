@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import './SearchAlbum.css'
 
 function SearchAlbum() {
 
@@ -33,7 +34,7 @@ function SearchAlbum() {
     const handleSubmit = async () => {}
 
     return ( 
-        <>
+        <div className="search-content">
             <input 
             type="text"
             value={input}
@@ -45,7 +46,7 @@ function SearchAlbum() {
                     </li>
                 ))}
             </ul>
-        </>
+        </div>
     );
 }
 
