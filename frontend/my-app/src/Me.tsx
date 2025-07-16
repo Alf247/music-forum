@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 function Me() {
 
     const [me, setMe] = useState()
-    
+
     const getMe = () => {
         axios.get('/me').then(res => {
             setMe(res.data)            
@@ -23,7 +23,7 @@ function Me() {
         
         <div className="me">
             <img src={me['images'][0]['url']} width={me['images'][0]['width']} height={me['images'][0]['height']} alt="Profile picture of user" />
-            <p>{me['display_name']} from {me['country']} has {me['followers']['total']} followers</p>
+            <p>{me['display_name']} from {me['country']} has {me['followers']['total']} {me === 1 ? 'followers' : 'follower'}</p>
         </div>
 
         :
