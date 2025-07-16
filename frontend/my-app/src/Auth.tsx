@@ -20,7 +20,10 @@ function Auth() {
     }, [])
 
     return (
+        link ? 
         <a href={link}>Click here to log into Spotify.</a>
+        :
+        <p>Loading...</p>
     )
 }
 
