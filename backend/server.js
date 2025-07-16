@@ -6,8 +6,6 @@ app.use(cors({
     origin: 'http://localhost:3000',
     credentials: true
 }))
-//const https = require('https')
-//const router = app.router
 
 const port = process.env.PORT || 8080
 const redirect = process.env.REDIRECT || 'https://localhost:8080/callback'
@@ -21,13 +19,15 @@ const spotifyApi = new SpotifyWebApi({
 
 
 app.get('/', (req, res) => {
+
+    // Checks if access token is still valid
+    if (!spotifyApi.getAccessToken()) {
+
+        res.redirect('/auth')
+
+    }
     
     res.send("This is the response from the server.")
-    
-    /* const accessToken = req.cookies[MY_ACCESS_TOKEN]
-    if (!accessToken) {
-
-    } */
 })
 
 app.get('/auth', (req, res) => {
@@ -67,9 +67,6 @@ app.get('/callback', (req, res) => {
         spotifyApi.setAccessToken(accessToken)
         spotifyApi.setRefreshToken(refreshToken)
 
-        console.log('ACCESS TOKEN GET METHOD RETURNED: ' + spotifyApi.getAccessToken())
-
-        //res.redirect(`../?access_token=${accessToken}&refresh_token=${refreshToken}`); // FIX THIS
         res.redirect('http://localhost:3000/')
     })
 });
