@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Me from "./Me";
 import Auth from "./Auth";
+import SearchAlbum from "./components/SearchAlbum";
 
 
 function Home() {
@@ -38,6 +39,8 @@ function Home() {
                 <br /><br />
                 <button onClick={getResponse}>Test server</button>
                 <p>{serverResponse}</p>
+                <br />
+                <SearchAlbum/>
             </>
 
         :
