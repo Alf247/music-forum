@@ -33,6 +33,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/isauth', (req, res) => {
+    console.log('GET /isauth hit');
     res.send(spotifyApi.getAccessToken() ? true : false)
 })
 
