@@ -1,7 +1,6 @@
-import pool from './database.js'
-
 const express = require('express')
 const cors = require('cors')
+const pool = require('../backend/database.js')
 const app = express()
 
 app.use(cors({
