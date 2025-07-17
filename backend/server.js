@@ -110,7 +110,7 @@ app.get('/albums', (req, res) => {
     })
 })
 
-app.get('/submit', (req, res) => {
+app.post('/submit', (req, res) => {
     console.log(req.body)
     res.status(200).send('/submit triggered with: ' + JSON.stringify(req.body))
 })
