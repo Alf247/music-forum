@@ -33,7 +33,6 @@ app.get('/', (req, res) => {
     // Checks if access token is still valid
     if (!spotifyApi.getAccessToken()) {
         console.log('Access token not found')
-        res.redirect('http://localhost:3000/auth') // Fix this line
 
     }
     
@@ -113,7 +112,7 @@ app.get('/albums', (req, res) => {
 
 app.post('/submit', (req, res) => {
     console.log(req.body)
-    res.status(200).send('/submit triggered with: ', req.body)
+    res.status(200).send('/submit triggered with: ' + JSON.stringify(req.body))
 })
 
 
