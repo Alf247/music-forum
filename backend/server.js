@@ -112,7 +112,8 @@ app.get('/albums', (req, res) => {
 })
 
 app.post('/submit', (req, res) => {
-    res.send('/submit triggered with: ', req.body)
+    console.log(req.body)
+    res.status(200).send('/submit triggered with: ', req.body)
 })
 
 
