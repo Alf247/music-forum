@@ -1,11 +1,12 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import SearchAlbum from "./SearchAlbum"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
+import './CreateReview.css'
 
 interface Review {
     album: string,
-    reviewText: string,
+    reviewText: string | null,
     rating: number | null
 }
 
@@ -13,14 +14,14 @@ function CreateReview() {
 
     const navigate = useNavigate()
     
-    const [selected, setSelected] = useState('')
-    const [reviewText, setReviewText] = useState('')
+    const [selected, setSelected] = useState<Record<string, any>>({})
+    const [reviewText, setReviewText] = useState<string | null>(null)
     const [rating, setRating] = useState<number | null>(null)
 
     const handleSubmit = async (e: React.FormEvent) => {
 
         const review: Review = {
-            album: selected,
+            album: selected['id'],
             reviewText: reviewText,
             rating: rating
         }
@@ -36,25 +37,36 @@ function CreateReview() {
     }
     
     return (
-        selected ?
+        selected['id'] ?
         <form className="create-review" action="" method="post" onSubmit={handleSubmit}>
-            <input 
-              className="review-text" 
-              placeholder="Write your review..."
-              type="text"
-              onChange={(e) => { setReviewText(e.target.value) }} />
+            <img className="album-cover" src={selected['images']['0']['url']} alt="Album cover" />
+            <div className="two-thirds">
+                <div>
+                    <h2 className="album-title">{(selected['name'] as string).toUpperCase()}</h2>
+                    <span className="album-subtitle">({(selected['release_date'] as string).slice(0,4) ?? 'N/A'}) by {selected['artists'][0]['name']}</span>
+                </div>
+                <br />
+                <input 
+                  className="review-rating" 
+                  placeholder="1-10"
+                  min="1" 
+                  max="10" 
+                  type="number"
+                  onChange={(e) => { 
+                      const val = Number(e.target.value)
+                      setRating(val) }} />
+                <br />
+                <textarea 
+                  className="review-text" 
+                  placeholder="Write your review..."
+                  onChange={(e) => { setReviewText(e.target.value) }} />
 
-            <input 
-              className="review-rating" 
-              placeholder="1-10"
-              min="1" 
-              max="10" 
-              type="number"
-              onChange={(e) => { 
-                const val = Number(e.target.value)
-                setRating(val) }} />
-
-            <button type="submit">Submit</button>
+                <br />
+                <div className="buttons">
+                    <button className="back" onClick={() => { setSelected({}) }}>Back</button>
+                    <button className="submit-review" type="submit">Submit</button>
+                </div>
+            </div>
         </form>
         :
         <SearchAlbum setSelect={setSelected} />

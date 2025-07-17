@@ -3,7 +3,7 @@ import { useState } from "react";
 import './SearchAlbum.css'
 
 interface Select {
-    setSelect: React.Dispatch<React.SetStateAction<string>>
+    setSelect: React.Dispatch<React.SetStateAction<any>>
 }
 
 function SearchAlbum({ setSelect: setSelected }: Select) {
@@ -29,9 +29,10 @@ function SearchAlbum({ setSelect: setSelected }: Select) {
 
     }
 
-    const handleSelect = (item: string) => {
-        setInput(item)
+    const handleSelect = (item: any) => {
+        setInput(item['name'])
         setSelected(item)
+        console.log(item)
         setResults([])
     }
 
@@ -45,7 +46,7 @@ function SearchAlbum({ setSelect: setSelected }: Select) {
             onChange={handleChange} />
             <ul>
                 {results.map(item => (
-                    <li key={item['id']} onClick={() => handleSelect(item['name'])}>
+                    <li key={item['id']} onClick={() => handleSelect(item)}>
                         <b>{item['name']}</b> ({(item['release_date'] as string).slice(0,4) ?? 'N/A'}) by {item['artists'][0]['name']}
                     </li>
                 ))}
