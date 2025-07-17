@@ -97,6 +97,10 @@ app.get('/me', (req, res) => {
     })
 })
 
+app.get('/album', (req, res) => {
+    res.send('"/album" triggered')
+})
+
 app.get('/albums', (req, res) => {
     const album = req.query.album
 
@@ -108,7 +112,7 @@ app.get('/albums', (req, res) => {
 })
 
 app.post('/submit', (req, res) => {
-
+    res.send('/submit triggered with: ', req.body)
 })
 
 
