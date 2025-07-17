@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Me from "./Me";
 import Auth from "./Auth";
 import SearchAlbum from "./components/SearchAlbum";
+import CreateReview from "./components/CreateReview";
 
 
 function Home() {
@@ -40,7 +41,7 @@ function Home() {
                 <button onClick={getResponse}>Test server</button>
                 <p>{serverResponse}</p>
                 <br />
-                <SearchAlbum/>
+                <CreateReview/>
             </>
 
         :

@@ -1,12 +1,16 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import './SearchAlbum.css'
 
-function SearchAlbum() {
+interface Select {
+    setSelect: React.Dispatch<React.SetStateAction<string>>
+}
+
+function SearchAlbum({ setSelect: setSelected }: Select) {
 
     const [input, setInput] = useState('')
     const [results, setResults] = useState([])
-    const [selected, setSelected] = useState('')
+    //const [selected, setSelected] = useState('')
 
     const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         setTimeout(() => {}, 30)
@@ -31,7 +35,7 @@ function SearchAlbum() {
         setResults([])
     }
 
-    const handleSubmit = async () => {}
+    //const handleSubmit = async () => {}
 
     return ( 
         <div className="search-content">
