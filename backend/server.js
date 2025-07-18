@@ -118,6 +118,13 @@ app.post('/submit', (req, res) => {
       res.status(200).json({ success: true });
 })
 
+app.post('http://localhost:3000/', (req, res) => {
+  // Handle the incoming POST request
+  // For example, parse the request body, save data, etc.
+  console.log('Received POST request to /');
+  res.status(200).send('POST request received successfully!');
+});
+
 
 app.listen(port, () => {
     console.log("Server started!")
