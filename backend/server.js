@@ -30,7 +30,7 @@ const query = require('../backend/modules/query.js')
 
 // ROUTES
 // AUTHENTICATION
-app.get('/', (req, res) => {
+/* app.get('/', (req, res) => {
 
     // Checks if access token is still valid
     if (!spotifyApi.getAccessToken()) {
@@ -39,7 +39,7 @@ app.get('/', (req, res) => {
     }
     
     res.send("This is the response from the server.")
-})
+}) */
 
 app.get('/isauth', (req, res) => {
     console.log('GET /isauth hit');
@@ -117,13 +117,6 @@ app.post('/submit', (req, res) => {
     console.log(req.body)
       res.status(200).json({ success: true });
 })
-
-app.post('http://localhost:3000/', (req, res) => {
-  // Handle the incoming POST request
-  // For example, parse the request body, save data, etc.
-  console.log('Received POST request to /');
-  res.status(200).send('POST request received successfully!');
-});
 
 
 app.listen(port, () => {
