@@ -81,7 +81,7 @@ app.get('/callback', (req, res) => {
         console.log('The refresh token is ' + refreshToken)
 
         spotifyApi.setAccessToken(accessToken)
-        spotifyApi.setRefreshToken(refreshToken)
+        spotifyApi.setRefreshToken(refreshToken) */
 
         res.redirect('http://localhost:3000/')
     })

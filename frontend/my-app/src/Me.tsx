@@ -7,10 +7,10 @@ function Me() {
     const [me, setMe] = useState()
 
     const getMe = () => {
-        axios.get('/me', { withCredentials: true }).then(res => {
+        axios.get('/me').then(res => {
             setMe(res.data)            
         }).catch(err => {
-            console.error('[ERROR] Could not get "/me"', err)
+            console.error('[ERROR] Could not get "/me"')
         })
     }
 

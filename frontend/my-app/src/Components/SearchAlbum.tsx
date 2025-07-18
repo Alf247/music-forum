@@ -19,7 +19,7 @@ function SearchAlbum({ setSelect: setSelected }: Select) {
         if (input === '') {
             setResults([])
         } else {
-            axios.get('/albums', { withCredentials: true, params: { album: value} }).then(res => {
+            axios.get('/albums', { params: { album: value} }).then(res => {
                 setResults(res.data.albums.items)
             }).catch(err => {
                 console.error('Error getting /album: ' + err)
