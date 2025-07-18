@@ -7,7 +7,7 @@ function Auth() {
     const [link, setLink] = useState()
 
     const getLink = () => {
-        axios.get("/auth").then(res => {
+        axios.get("/auth", { withCredentials: true }).then(res => {
             setLink(res.data)
             console.log('Got authentication link.')
         }).catch(err => {

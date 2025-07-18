@@ -180,12 +180,12 @@ app.get('/callback', (req, res) => {
             expiresAt: Date.now() + (expiresIn * 1000)
         }
 
-        /* console.log('The token expires in ' + expiresIn)
-        console.log('The access token is ' + accessToken)
-        console.log('The refresh token is ' + refreshToken)
+        //console.log('The token expires in ' + expiresIn)
+        //console.log('The access token is ' + accessToken)
+        //console.log('The refresh token is ' + refreshToken)
 
         spotifyApi.setAccessToken(accessToken)
-        spotifyApi.setRefreshToken(refreshToken) */
+        spotifyApi.setRefreshToken(refreshToken)
 
         res.redirect('http://localhost:3000/')
     }).catch(err => {
