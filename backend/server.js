@@ -71,8 +71,6 @@ app.get('/callback', (req, res) => {
         return;
     }
 
-    const spotifyApi = getUserSpotifyApi(req)
-
     spotifyApi.authorizationCodeGrant(code).then(data => {
         const accessToken = data.body['access_token']
         const refreshToken = data.body['refresh_token']
