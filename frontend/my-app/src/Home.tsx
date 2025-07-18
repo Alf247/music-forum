@@ -14,7 +14,7 @@ function Home() {
         checkAuthorization()
     }, [])
 
-    const checkAuthorization = async () => {
+    const checkAuthorization = () => {
         axios.get('/isauth').then(res => {
             setAuthorized(res.data)
         }).catch(err => {
@@ -22,7 +22,7 @@ function Home() {
         })
     }
 
-    const getResponse = async () => {
+    const getResponse = () => {
         axios.get('/').then(res => {
             setRes(res.data)
         }).catch(err => {
