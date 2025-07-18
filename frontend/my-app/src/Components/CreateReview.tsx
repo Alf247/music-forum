@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import SearchAlbum from "./SearchAlbum"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
@@ -20,6 +20,8 @@ function CreateReview() {
 
     const handleSubmit = async (e: React.FormEvent) => {
 
+        e.preventDefault()
+
         const review: Review = {
             album: selected['id'],
             reviewText: reviewText,
@@ -28,11 +30,12 @@ function CreateReview() {
 
         console.log(review)
 
-        axios.post('/submit', review).then(res => {
+        axios.post('https://music-forum.onrender.com/submit', review, { withCredentials: true }).then(res => {
             console.log(res)
             navigate('/')
         }).catch(err => {
             console.error('Error submitting review: ', err)
+            navigate('/')
         })
     }
     

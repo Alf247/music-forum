@@ -25,9 +25,9 @@ function Home() {
 
     const getResponse = async () => {
         axios.get('/').then(res => {
-        setRes(res.data)
+            setRes(res.data)
         }).catch(err => {
-        console.log(err)
+            console.log(err)
         })
     }
 

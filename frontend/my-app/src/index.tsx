@@ -6,7 +6,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import axios from 'axios'
 
-axios.defaults.baseURL = 'https://music-forum.onrender.com' 
+axios.defaults.baseURL = 'https://music-forum.onrender.com'
 //axios.defaults.baseURL = 'https://localhost:8080' 
 axios.defaults.withCredentials = true
 
