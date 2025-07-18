@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
-import './Auth.css'
+import { href, redirect } from "react-router-dom"
 
 function Auth() {
     
@@ -20,12 +20,10 @@ function Auth() {
     }, [])
 
     return (
-        <div className="flex-container-vertical">
-            {link ? 
-            <a className="spotify-link" href={link}>Click here to log into Spotify.</a>
-            :
-            <p>Loading...</p>}
-        </div>
+        link ? 
+        <a href={link}>Click here to log into Spotify.</a>
+        :
+        <p>Loading...</p>
     )
 }
 

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Me from "./Me";
-import Auth from "./components/Auth";
+import Auth from "./Auth";
 import Header from "./components/Header";
 
 
