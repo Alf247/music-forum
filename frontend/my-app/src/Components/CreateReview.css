@@ -6,6 +6,11 @@
     padding: 40px 40px;
 }
 
+.child {
+    align-content: center;
+    margin: 0 auto;
+}
+
 .two-thirds {
     display: flex;
     flex-direction: column;
@@ -42,6 +47,8 @@
     vertical-align:text-top;
     resize: none;
     font-family: inherit;
+    font-weight: 400;
+    font-size: large;
 }
 
 .buttons {

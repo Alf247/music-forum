@@ -10,7 +10,6 @@ function SearchAlbum({ setSelect: setSelected }: Select) {
 
     const [input, setInput] = useState('')
     const [results, setResults] = useState([])
-    //const [selected, setSelected] = useState('')
 
     const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         setTimeout(() => {}, 30)
@@ -36,21 +35,24 @@ function SearchAlbum({ setSelect: setSelected }: Select) {
         setResults([])
     }
 
-    //const handleSubmit = async () => {}
-
     return ( 
         <div className="search-content">
-            <input 
-            type="text"
-            value={input}
-            onChange={handleChange} />
-            <ul>
+            <div>
+                <input 
+                  type="text"
+                  placeholder="Search for an album"
+                  value={input}
+                  onChange={handleChange} />
+
+                <ul>
                 {results.map(item => (
                     <li key={item['id']} onClick={() => handleSelect(item)}>
                         <b>{item['name']}</b> ({(item['release_date'] as string).slice(0,4) ?? 'N/A'}) by {item['artists'][0]['name']}
                     </li>
                 ))}
-            </ul>
+                </ul>
+            </div>
+            <div></div>
         </div>
     );
 }

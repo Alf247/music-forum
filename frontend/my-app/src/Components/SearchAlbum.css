@@ -1,5 +1,11 @@
 .search-content {
     width: 250px;
+    height: 100vh;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 2;
+    justify-content: space-around;
 }
 
 input {

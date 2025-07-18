@@ -1,7 +1,7 @@
 .App {
   text-align: center;
-  background-color: rgb(107, 107, 107);
   max-width: 950px;
+  min-height: 100vh;
   margin: 0 auto;
   padding: 30px 0;
 }

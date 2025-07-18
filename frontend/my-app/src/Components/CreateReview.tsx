@@ -62,6 +62,7 @@ function CreateReview() {
                 <textarea 
                   className="review-text" 
                   placeholder="Write your review..."
+                  spellCheck="false"
                   onChange={(e) => { setReviewText(e.target.value) }} />
 
                 <br />
