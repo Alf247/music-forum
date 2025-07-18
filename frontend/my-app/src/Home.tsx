@@ -2,8 +2,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Me from "./Me";
 import Auth from "./Auth";
-import SearchAlbum from "./components/SearchAlbum";
-import CreateReview from "./components/CreateReview";
 import Header from "./components/Header";
 
 

@@ -1,8 +1,14 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
-function Review() {
+function Review(reviewId: string) {
 
+    const [user, setUser] = useState()
     const [review, setReview] = useState()
+
+    useEffect(() => {
+        // Get me
+        // Get review
+    }, [])
 
     return (
         <div className="review">

@@ -115,7 +115,7 @@ app.get('/albums', (req, res) => {
 app.post('/submit', (req, res) => {
     console.log('/submit HIT')
     console.log(req.body)
-      res.status(200).json({ success: true });
+    res.status(200).json({ success: true });
 })
 
 
