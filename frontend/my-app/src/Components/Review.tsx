@@ -18,6 +18,7 @@ function Review(reviewId: string) {
                 <time dateTime="">PLACEHOLDER</time>
                 <p className="review-rating">PLACEHOLDER</p>
                 <p className="review-text">PLACEHOLDER</p>
+                <button>Edit</button>
 
             </div>
         </div>
