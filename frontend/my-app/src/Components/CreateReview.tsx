@@ -41,37 +41,41 @@ function CreateReview() {
     
     return (
         selected['id'] ?
-        <form className="create-review" action="" method="post" onSubmit={handleSubmit}>
-            <img className="album-cover" src={selected['images']['0']['url']} alt="Album cover" />
-            <div className="two-thirds">
-                <div>
-                    <h2 className="album-title">{(selected['name'] as string).toUpperCase()}</h2>
-                    <span className="album-subtitle">({(selected['release_date'] as string).slice(0,4) ?? 'N/A'}) by {selected['artists'][0]['name']}</span>
-                </div>
-                <br />
-                <input 
-                  className="review-rating" 
-                  placeholder="1-10"
-                  min="1" 
-                  max="10" 
-                  type="number"
-                  onChange={(e) => { 
-                      const val = Number(e.target.value)
-                      setRating(val) }} />
-                <br />
-                <textarea 
-                  className="review-text" 
-                  placeholder="Write your review..."
-                  spellCheck="false"
-                  onChange={(e) => { setReviewText(e.target.value) }} />
+        <div className="flex-container-vertical">
+            <div>
+                <form className="create-review" action="" method="post" onSubmit={handleSubmit}>
+                    <img className="album-cover" src={selected['images']['0']['url']} alt="Album cover" />
+                    <div className="two-thirds">
+                        <div>
+                            <h2 className="album-title">{(selected['name'] as string).toUpperCase()}</h2>
+                            <span className="album-subtitle">({(selected['release_date'] as string).slice(0,4) ?? 'N/A'}) by {selected['artists'][0]['name']}</span>
+                        </div>
+                        <br />
+                        <input 
+                        className="review-rating" 
+                        placeholder="1-10"
+                        min="1" 
+                        max="10" 
+                        type="number"
+                        onChange={(e) => { 
+                            const val = Number(e.target.value)
+                            setRating(val) }} />
+                        <br />
+                        <textarea 
+                        className="review-text" 
+                        placeholder="Write your review..."
+                        spellCheck="false"
+                        onChange={(e) => { setReviewText(e.target.value) }} />
 
-                <br />
-                <div className="buttons">
-                    <button className="back" onClick={() => { setSelected({}) }}>Back</button>
-                    <button className="submit-review" type="submit">Submit</button>
-                </div>
+                        <br />
+                        <div className="buttons">
+                            <button className="back" onClick={() => { setSelected({}) }}>BACK</button>
+                            <button className="submit-review" type="submit">SAVE</button>
+                        </div>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
         :
         <SearchAlbum setSelect={setSelected} />
     )

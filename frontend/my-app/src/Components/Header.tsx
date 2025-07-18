@@ -10,7 +10,7 @@ function Header() {
 
     return (
         <nav>
-            <button onClick={ goToLog }>Log.</button>
+            <button onClick={ goToLog }>LOG</button>
         </nav>
     );
 }
