@@ -139,21 +139,21 @@ app.get('/auth', (req, res) => {
     const spotifyApi = createSpotifyApi()
     const scopes = ['user-read-private']
 
-    req.session.authState = Math.random().toString(36).substring(7)
+    //req.session.authState = Math.random().toString(36).substring(7)
 
-    res.send(spotifyApi.createAuthorizeURL(scopes, req.session.authState, true))
+    res.send(spotifyApi.createAuthorizeURL(scopes, '', true))
 })
 
 app.get('/callback', (req, res) => {
     console.log(req.query)
     const error = req.query.error
     const code = req.query.code
-    const state = req.query.state
+    /* const state = req.query.state
 
     // Verify state to prevent CSRF
     if (state !== req.session.authState) {
         return res.status(400).send('Invalid state parameter')
-    }
+    } */
 
     if (!code) {
         console.error('No authorization code received.')
