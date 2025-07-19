@@ -5,4 +5,4 @@ CREATE TABLE IF NOT EXISTS reviews (
     rating INTEGER,
     review TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
+);
