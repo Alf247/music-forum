@@ -65,22 +65,24 @@ const startServer = async() => {
         app.post('/submit', (req, res) => {
             console.log('/submit HIT')
             const { album, reviewText, rating } = req.body
-            const me = null
+            
             spotifyApi.getMe().then(data => {
-                me = data.body.id
+                const me = data.body.id
+                console.log(me)
+
+                pool.query(query.submitReview, [me, album, reviewText, rating]).then(_ => {
+                    res.status(200).json({ success: true });
+                }).catch(err => {
+                    console.error('Error submitting review: ', err)
+                    res.status(400).send(err)
+                })
+
             }).catch(err => {
                 console.error('Error getting me: ', err)
                 res.status(400).send(err)
             })
-            
-            console.log(me)
 
-            pool.query(query.submitReview, [me, album, reviewText, rating]).then(_ => {
-                res.status(200).json({ success: true });
-            }).catch(err => {
-                console.error('Error submitting review: ', err)
-                res.status(400).send(err)
-            })
+
 
         })
         
