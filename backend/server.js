@@ -65,7 +65,7 @@ const startServer = async() => {
         app.post('/submit', (req, res) => {
             console.log('/submit HIT')
             const { album, reviewText, rating } = req.body
-            
+    
             spotifyApi.getMe().then(data => {
                 const me = data.body.id
                 console.log(me)
@@ -108,7 +108,7 @@ const startServer = async() => {
                 'user-read-private'
             ]
             
-            res.send(spotifyApi.createAuthorizeURL(scopes, "", true))
+            res.send(spotifyApi.createAuthorizeURL(scopes, "", false))
         })
         
         app.get('/callback', (req, res) => {
@@ -155,10 +155,19 @@ const startServer = async() => {
             })
         })
         
+        // Uses album id to search
         app.get('/album', (req, res) => {
-            res.send('"/album" triggered')
+            const { id } = req.body
+            spotifyApi.getAlbum(id).then(data => {
+                console.log('/album was successful: ', data.body)
+                res.send(data.body)
+            }).catch(err => {
+                console.error('Error getting /album: ', err)
+                res.status(401).send('Error getting /album: ', err)
+            })
         })
         
+        // Uses album name to search
         app.get('/albums', (req, res) => {
             const album = req.query.album
             
