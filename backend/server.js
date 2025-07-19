@@ -25,7 +25,7 @@ const spotifyApi = new SpotifyWebApi({
 // DATABASE
 const pool = require('./database/database.js')
 const query = require('./database/query.js')
-const { initializeFromSQL } = require('./database/init.js')
+const initializeFromSQL = require('./database/init.js')
 
 
 const startServer = async() => {
