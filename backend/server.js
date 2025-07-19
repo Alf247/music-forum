@@ -52,7 +52,7 @@ const startServer = async() => {
             }
         });
 
-        app.get('/review', (req, res) => {
+        app.get('/reviews', (req, res) => {
             pool.query(query.everything).then(data => {
                 console.log('Got reviews!')
                 res.json(data.rows)
@@ -61,6 +61,10 @@ const startServer = async() => {
                 res.status(400).send(err)
             })
         })
+
+        /* app.get('/review', (req, res) => {
+            const 
+        }) */
         
         app.post('/submit', (req, res) => {
             console.log('/submit HIT')
@@ -152,6 +156,17 @@ const startServer = async() => {
                 res.send(data.body)
             }).catch(err => {
                 console.error('Error getting "me": ' + err)
+            })
+        })
+
+        app.get('/user', (req, res) => {
+            const { id } = req.data
+            spotifyApi.getUser(id).then(data => {
+                console.log('Got user: ', req.data)
+                res.send(data.body)
+            }).catch(err => {
+                console.error('Error getting user: ', err)
+                res.status(401).send()
             })
         })
         
