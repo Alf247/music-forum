@@ -160,7 +160,7 @@ const startServer = async() => {
         })
 
         app.get('/user', (req, res) => {
-            const { id } = req.data
+            const id = req.data
             spotifyApi.getUser(id).then(data => {
                 console.log('Got user: ', req.data)
                 res.send(data.body)
@@ -172,7 +172,7 @@ const startServer = async() => {
         
         // Uses album id to search
         app.get('/album', (req, res) => {
-            const { id } = req.body
+            const id = req.body
             spotifyApi.getAlbum(id).then(data => {
                 console.log('/album was successful: ', data.body)
                 res.send(data.body)
