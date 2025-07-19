@@ -44,7 +44,9 @@ function CreateReview() {
         <div className="flex-container-vertical">
             <div>
                 <form className="create-review" action="" method="post" onSubmit={handleSubmit}>
-                    <img className="album-cover" src={selected['images']['0']['url']} alt="Album cover" />
+                    <a href={selected['external_urls']['spotify']} target="_blank" rel="noreferrer">
+                        <img className="album-cover" src={selected['images']['0']['url']} alt="Album cover" />
+                    </a>
                     <div className="two-thirds">
                         <div>
                             <h2 className="album-title">{(selected['name'] as string).toUpperCase()}</h2>
