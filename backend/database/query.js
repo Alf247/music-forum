@@ -1,1 +1,1 @@
-export const everything = 'SELECT * FROM *'
+export const everything = 'SELECT * FROM reviews'

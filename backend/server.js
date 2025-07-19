@@ -51,6 +51,11 @@ const startServer = async() => {
                 });
             }
         });
+
+        app.get('/album', (req, res) => {
+            const data = pool.query(query.everything)
+            console.log(data)
+        })
         
         app.post('/submit', (req, res) => {
             console.log('/submit HIT')
