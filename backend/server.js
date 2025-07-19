@@ -23,120 +23,133 @@ const spotifyApi = new SpotifyWebApi({
 
 
 // DATABASE
-const pool = require('../backend/modules/database.js')
-const query = require('../backend/modules/query.js')
+const pool = require('./database/database.js')
+const query = require('./database/query.js')
+const { initializeDatabase } = require('./database/init.js')
 
 
-
-// ROUTES
-// DATABASE
-app.get('/health', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT NOW()');
-    res.json({ 
-      status: 'healthy', 
-      database: 'connected',
-      timestamp: result.rows[0].now 
-    });
-  } catch (err) {
-    res.status(500).json({ 
-      status: 'error', 
-      database: 'disconnected',
-      error: err.message 
-    });
-  }
-});
-
-// AUTHENTICATION
-/* app.get('/', (req, res) => {
-
-    // Checks if access token is still valid
-    if (!spotifyApi.getAccessToken()) {
-        console.log('Access token not found')
-
-    }
+const startServer = async() => {
+    try {
     
-    res.send("This is the response from the server.")
-}) */
+        await initializeDatabase()
+        
+        
+        // DATABASE
+        app.get('/health', async (req, res) => {
+            try {
+                const result = await pool.query('SELECT NOW()');
+                res.json({ 
+                    status: 'healthy', 
+                    database: 'connected',
+                    timestamp: result.rows[0].now 
+                });
+            } catch (err) {
+                res.status(500).json({ 
+                    status: 'error', 
+                    database: 'disconnected',
+                    error: err.message 
+                });
+            }
+        });
+        
+        app.post('/submit', (req, res) => {
+            console.log('/submit HIT')
+            console.log(req.body)
+            res.status(200).json({ success: true });
+        })
+        
 
-app.get('/isauth', (req, res) => {
-    console.log('GET /isauth hit');
-    res.send(spotifyApi.getAccessToken() ? true : false)
-})
+        // AUTHENTICATION
+        /* app.get('/', (req, res) => {
+            // Checks if access token is still valid
+            if (!spotifyApi.getAccessToken()) {
+                console.log('Access token not found')
+                
+                }
+                
+                res.send("This is the response from the server.")
+        }) */
+        
+        app.get('/isauth', (req, res) => {
+            console.log('GET /isauth hit');
+            res.send(spotifyApi.getAccessToken() ? true : false)
+        })
+        
+        app.get('/auth', (req, res) => {
+            const scopes = [
+                'user-read-private'
+            ]
+            
+            res.send(spotifyApi.createAuthorizeURL(scopes, "", true))
+        })
+        
+        app.get('/callback', (req, res) => {
+            console.log(req.query)
+            const error = req.query.error
+            const code = req.query.code
+            const state = req.query.state
+            
+            if (!code) {
+                console.error('No authorization code received.')
+                return res.status(400).send('Authorization code is missing.')
+            }    
+            
+            if (error) {
+                console.error('Error when getting callback: ', error)
+                res.send(`Error when getting callback: ${error}`)       // Preventes end-point from constantly waiting
+                return;
+            }
+            
+            spotifyApi.authorizationCodeGrant(code).then(data => {
+                const accessToken = data.body['access_token']
+                const refreshToken = data.body['refresh_token']
+                const expiresIn = data.body['expires_in']
+                
+                console.log('The token expires in ' + expiresIn)
+                console.log('The access token is ' + accessToken)
+                console.log('The refresh token is ' + refreshToken)
+                
+                spotifyApi.setAccessToken(accessToken)
+                spotifyApi.setRefreshToken(refreshToken)
+                
+                res.redirect('http://localhost:3000/')
+            })
+        });
+        
 
-app.get('/auth', (req, res) => {
-    const scopes = [
-        'user-read-private'
-    ]
-
-    res.send(spotifyApi.createAuthorizeURL(scopes, "", true))
-})
-
-app.get('/callback', (req, res) => {
-    console.log(req.query)
-    const error = req.query.error
-    const code = req.query.code
-    const state = req.query.state
-
-    if (!code) {
-        console.error('No authorization code received.')
-        return res.status(400).send('Authorization code is missing.')
-    }    
-
-    if (error) {
-        console.error('Error when getting callback: ', error)
-        res.send(`Error when getting callback: ${error}`)       // Preventes end-point from constantly waiting
-        return;
+        // GET SPOTIFY
+        app.get('/me', (req, res) => {
+            spotifyApi.getMe().then(data => {
+                console.log('[SEND] Information about authenticated user: ' + data)
+                res.send(data.body)
+            }).catch(err => {
+                console.error('Error getting "me": ' + err)
+            })
+        })
+        
+        app.get('/album', (req, res) => {
+            res.send('"/album" triggered')
+        })
+        
+        app.get('/albums', (req, res) => {
+            const album = req.query.album
+            
+            spotifyApi.searchAlbums(album, {limit: 10, offset: 0}).then(data => {
+                res.send(data.body)
+            }).catch(err => {
+                console.error('Error getting albums: ', err)
+            })
+        })
+        
+    
+        app.listen(port, () => {
+            console.log("Server started!")
+        })
+    } catch (error) {
+        console.error('Failed to start server: ', error)
+        process.exit(1)
     }
-
-    spotifyApi.authorizationCodeGrant(code).then(data => {
-        const accessToken = data.body['access_token']
-        const refreshToken = data.body['refresh_token']
-        const expiresIn = data.body['expires_in']
-
-        console.log('The token expires in ' + expiresIn)
-        console.log('The access token is ' + accessToken)
-        console.log('The refresh token is ' + refreshToken)
-
-        spotifyApi.setAccessToken(accessToken)
-        spotifyApi.setRefreshToken(refreshToken)
-
-        res.redirect('http://localhost:3000/')
-    })
-});
+}
 
 
-// GENERAL
-app.get('/me', (req, res) => {
-    spotifyApi.getMe().then(data => {
-        console.log('[SEND] Information about authenticated user: ' + data)
-        res.send(data.body)
-    }).catch(err => {
-        console.error('Error getting "me": ' + err)
-    })
-})
-
-app.get('/album', (req, res) => {
-    res.send('"/album" triggered')
-})
-
-app.get('/albums', (req, res) => {
-    const album = req.query.album
-
-    spotifyApi.searchAlbums(album, {limit: 10, offset: 0}).then(data => {
-        res.send(data.body)
-    }).catch(err => {
-        console.error('Error getting albums: ', err)
-    })
-})
-
-app.post('/submit', (req, res) => {
-    console.log('/submit HIT')
-    console.log(req.body)
-    res.status(200).json({ success: true });
-})
-
-
-app.listen(port, () => {
-    console.log("Server started!")
-})
+startServer()
