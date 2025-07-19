@@ -32,7 +32,6 @@ const query = require('../backend/modules/query.js')
 // DATABASE
 app.get('/health', async (req, res) => {
   try {
-    console.log(typeof pool)
     const result = await pool.query('SELECT NOW()');
     res.json({ 
       status: 'healthy', 
