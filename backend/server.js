@@ -29,6 +29,24 @@ const query = require('../backend/modules/query.js')
 
 
 // ROUTES
+// DATABASE
+app.get('/health', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT NOW()');
+    res.json({ 
+      status: 'healthy', 
+      database: 'connected',
+      timestamp: result.rows[0].now 
+    });
+  } catch (err) {
+    res.status(500).json({ 
+      status: 'error', 
+      database: 'disconnected',
+      error: err.message 
+    });
+  }
+});
+
 // AUTHENTICATION
 /* app.get('/', (req, res) => {
 
