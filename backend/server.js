@@ -54,7 +54,7 @@ const startServer = async() => {
 
         app.get('/reviews', (req, res) => {
             pool.query(query.everything).then(data => {
-                console.log('Got reviews!')
+                console.log('Got reviews: ', data.rows)
                 res.json(data.rows)
             }).catch(err => {
                 console.error('Error getting a review: ', err)
