@@ -52,9 +52,12 @@ const startServer = async() => {
             }
         });
 
-        app.get('/album', (req, res) => {
-            const data = pool.query(query.everything)
-            console.log(data)
+        app.get('/review', (req, res) => {
+            pool.query(query.everything).then(data => {
+                console.log(data)
+            }).catch(err => {
+                console.error('Error getting a review: ', err)
+            })
         })
         
         app.post('/submit', (req, res) => {
