@@ -35,13 +35,33 @@ const redirect = process.env.REDIRECT || 'https://localhost:8080/callback'
 
 // Helper function to get or create Spotify API instance for user
 const getSpotifyApi = (session) => {
-    if (!session.spotifyApi) {
-        session.spotifyApi = new SpotifyWebApi({
-            clientId: process.env.CLIENT_ID,
-            clientSecret: process.env.CLIENT_SECRET,
-            redirectUri: redirect
-        });
+    console.log('getSpotifyApi called, session exists:', !!session)
+    
+    if (!session) {
+        throw new Error('No session provided to getSpotifyApi')
     }
+    
+    if (!session.spotifyApi) {
+        console.log('Creating new Spotify API instance')
+        try {
+            session.spotifyApi = new SpotifyWebApi({
+                clientId: process.env.CLIENT_ID,
+                clientSecret: process.env.CLIENT_SECRET,
+                redirectUri: redirect
+            });
+            console.log('Spotify API instance created with:', {
+                clientId: process.env.CLIENT_ID ? 'SET' : 'MISSING',
+                clientSecret: process.env.CLIENT_SECRET ? 'SET' : 'MISSING',
+                redirectUri: redirect
+            })
+        } catch (err) {
+            console.error('Error creating Spotify API instance:', err)
+            throw err
+        }
+    } else {
+        console.log('Using existing Spotify API instance')
+    }
+    
     return session.spotifyApi;
 }
 
@@ -62,6 +82,16 @@ const initializeFromSQL = require('./database/init.js')
 
 const startServer = async() => {
     try {
+
+        // Add this at the very beginning of your server startup
+        console.log('=== ENVIRONMENT CHECK ===')
+        console.log('CLIENT_ID:', process.env.CLIENT_ID ? 'SET' : 'MISSING')
+        console.log('CLIENT_SECRET:', process.env.CLIENT_SECRET ? 'SET' : 'MISSING')
+        console.log('SESSION_SECRET:', process.env.SESSION_SECRET ? 'SET' : 'MISSING')
+        console.log('REDIRECT:', process.env.REDIRECT || 'using default')
+        console.log('NODE_ENV:', process.env.NODE_ENV)
+        console.log('========================')
+
         await initializeFromSQL()
         
         // DATABASE
@@ -134,11 +164,12 @@ const startServer = async() => {
             })
         })
         
-        // Alternative approach - remove state validation temporarily
         app.get('/callback', (req, res) => {
-            console.log('Callback hit:', req.query)
-            console.log('Session:', req.session)
+            console.log('=== CALLBACK DEBUG ===')
+            console.log('Query params:', req.query)
+            console.log('Session exists:', !!req.session)
             console.log('Session ID:', req.sessionID)
+            console.log('Session data:', req.session)
             
             const error = req.query.error
             const code = req.query.code
@@ -149,56 +180,56 @@ const startServer = async() => {
                 return res.status(400).send('Authorization code is missing.')
             }
             
-            // TEMPORARY FIX: Skip state validation for now
-            // TODO: Implement proper session store for production
-            // if (state !== req.session.authState) {
-            //     console.error('Invalid state parameter. Expected:', req.session.authState, 'Got:', state)
-            //     return res.status(400).send('Invalid state parameter.')
-            // }
-            
             if (error) {
-                console.error('Error when getting callback: ', error)
-                res.send(`Error when getting callback: ${error}`)
-                return;
+                console.error('OAuth error:', error)
+                return res.status(400).send(`OAuth error: ${error}`)
             }
             
-            const spotifyApi = getSpotifyApi(req.session);
-            
-            spotifyApi.authorizationCodeGrant(code).then(data => {
-                const accessToken = data.body['access_token']
-                const refreshToken = data.body['refresh_token']
-                const expiresIn = data.body['expires_in']
+            try {
+                console.log('Creating Spotify API instance...')
+                const spotifyApi = getSpotifyApi(req.session);
+                console.log('Spotify API instance created successfully')
                 
-                console.log('New user authenticated, token expires in:', expiresIn)
-                
-                spotifyApi.setAccessToken(accessToken)
-                spotifyApi.setRefreshToken(refreshToken)
-                
-                // Store token expiry time
-                req.session.tokenExpiry = Date.now() + (expiresIn * 1000);
-                
-                // Save session explicitly
-                req.session.save((err) => {
-                    if (err) {
-                        console.error('Error saving session:', err)
-                    }
-                    res.redirect('https://music-forum.onrender.com/') // Update to your frontend URL
-                })
-            }).catch(err => {
-                console.error('Error during token exchange:', err)
-                res.status(500).send('Authentication failed')
-            })
-        });
-
-        // Logout endpoint
-        app.post('/logout', (req, res) => {
-            req.session.destroy((err) => {
-                if (err) {
-                    console.error('Error destroying session:', err)
-                    return res.status(500).json({ error: 'Logout failed' })
-                }
-                res.json({ success: true })
-            })
+                console.log('Starting token exchange...')
+                spotifyApi.authorizationCodeGrant(code)
+                    .then(data => {
+                        console.log('Token exchange successful!')
+                        const accessToken = data.body['access_token']
+                        const refreshToken = data.body['refresh_token']
+                        const expiresIn = data.body['expires_in']
+                        
+                        console.log('Setting tokens...')
+                        spotifyApi.setAccessToken(accessToken)
+                        spotifyApi.setRefreshToken(refreshToken)
+                        
+                        // Store token expiry time
+                        req.session.tokenExpiry = Date.now() + (expiresIn * 1000);
+                        
+                        console.log('Saving session...')
+                        req.session.save((err) => {
+                            if (err) {
+                                console.error('Session save error:', err)
+                                return res.status(500).send('Session save failed: ' + err.message)
+                            }
+                            
+                            console.log('Session saved successfully, redirecting...')
+                            res.redirect('https://music-forum.onrender.com/')
+                        })
+                    })
+                    .catch(err => {
+                        console.error('Token exchange error:', err)
+                        console.error('Error details:', {
+                            message: err.message,
+                            statusCode: err.statusCode,
+                            body: err.body
+                        })
+                        res.status(500).send(`Token exchange failed: ${err.message}`)
+                    })
+            } catch (err) {
+                console.error('Callback error:', err)
+                console.error('Error stack:', err.stack)
+                res.status(500).send(`Callback error: ${err.message}`)
+            }
         })
 
         // Token refresh middleware/endpoint
