@@ -213,7 +213,7 @@ const startServer = async() => {
                             }
                             
                             console.log('Session saved successfully, redirecting...')
-                            res.redirect('https://music-forum.onrender.com/')
+                            res.redirect('http://localhost:3000')
                         })
                     })
                     .catch(err => {
