@@ -172,7 +172,7 @@ const startServer = async() => {
         
         // Uses album id to search
         app.get('/album', (req, res) => {
-            const id = req.body
+            const id = req.query.album_id
             spotifyApi.getAlbum(id).then(data => {
                 console.log('/album was successful: ', data.body)
                 res.send(data.body)
