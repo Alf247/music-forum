@@ -1,3 +1,7 @@
+:root {
+    --size: 350px
+}
+
 .create-review {
     background-color: rgb(37, 42, 44);
     display: flex;
@@ -15,14 +19,15 @@
 .two-thirds {
     display: flex;
     flex-direction: column;
-    width: 354px;
+    width: var(--size);
+    height: var(--size);
     margin: 0 20px;
     flex-grow: 2;
 }
 
 .album-cover {
-    width: 350px;
-    height: 350px;
+    width: var(--size);
+    height: var(--size);
 }
 
 .album-title {
