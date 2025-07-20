@@ -1,0 +1,14 @@
+.review {
+    background-color: rgb(37, 42, 44);
+    display: flex;
+    flex: auto;
+    justify-content: space-between;
+    margin: 30px 0px;
+    padding: 40px 40px;
+    border-radius: 5px;
+}
+
+.album-cover {
+    x: 0px;
+    y: 0px;
+}

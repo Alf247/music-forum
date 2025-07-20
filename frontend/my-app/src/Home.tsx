@@ -47,9 +47,6 @@ function Home() {
                     />
                 ))}
                 <Me></Me>
-                <br />
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum unde dolores odit vitae alias vel laudantium similique in aspernatur magni aliquam distinctio id quod maxime neque aliquid, repellat nemo sint? Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum saepe hic fugit vero, non unde voluptatum placeat earum deserunt eius inventore quia dignissimos sed ratione at corrupti alias repellat quaerat.
-                <br /><br />
             </>
 
         :

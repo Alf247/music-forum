@@ -41,6 +41,7 @@ function CreateReview() {
     
     return (
         selected['id'] ?
+        // FOR ALIGNING REVIEW IN THE CENTER
         <div className="flex-container-vertical">
             <div>
                 <form className="create-review" action="" method="post" onSubmit={handleSubmit}>
