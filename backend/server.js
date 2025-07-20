@@ -153,6 +153,13 @@ const startServer = async() => {
             const scopes = [
                 'user-read-private'
             ]
+
+            // Capture the origin from the request
+            const origin = req.get('Origin') || req.get('Referer');
+            console.log('Auth request origin:', origin);
+            
+            // Store the origin in session to use for redirect later
+            req.session.clientOrigin = origin;
             
             // Generate a state parameter for security (optional for now)
             const state = Math.random().toString(36).substring(2, 15);
@@ -166,8 +173,7 @@ const startServer = async() => {
         app.get('/callback', (req, res) => {
             console.log('=== CALLBACK DEBUG ===')
             console.log('Query params:', req.query)
-            console.log('Session exists:', !!req.session)
-            console.log('Session ID:', req.sessionID)
+            console.log('Session client origin:', req.session.clientOrigin)
             
             const error = req.query.error
             const code = req.query.code
@@ -184,36 +190,33 @@ const startServer = async() => {
             }
             
             try {
-                console.log('Creating fresh Spotify API instance for callback...')
                 const spotifyApi = new SpotifyWebApi({
                     clientId: process.env.CLIENT_ID,
                     clientSecret: process.env.CLIENT_SECRET,
                     redirectUri: redirect
                 });
                 
-                console.log('Starting token exchange...')
                 spotifyApi.authorizationCodeGrant(code)
                     .then(data => {
-                        console.log('Token exchange successful!')
                         const accessToken = data.body['access_token']
                         const refreshToken = data.body['refresh_token']
                         const expiresIn = data.body['expires_in']
                         
-                        console.log('Storing tokens in session...')
-                        // Store tokens in session (not the API instance)
                         req.session.accessToken = accessToken;
                         req.session.refreshToken = refreshToken;
                         req.session.tokenExpiry = Date.now() + (expiresIn * 1000);
                         
-                        console.log('Saving session...')
                         req.session.save((err) => {
                             if (err) {
                                 console.error('Session save error:', err)
                                 return res.status(500).send('Session save failed: ' + err.message)
                             }
                             
-                            console.log('Session saved successfully, redirecting...')
-                            res.redirect('https://music-forum.onrender.com/')
+                            // Determine redirect URL
+                            const redirectUrl = req.session.clientOrigin || getDefaultRedirectUrl(req);
+                            console.log('Redirecting to:', redirectUrl);
+                            
+                            res.redirect(redirectUrl);
                         })
                     })
                     .catch(err => {
