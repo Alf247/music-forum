@@ -23,7 +23,7 @@ function Review(review: ReviewI) {
     useEffect(() => {
         // Get user
         if (review) {
-            axios.get('/user', { params: { user_id: user_id } }).then(res => {
+            axios.get('/user', { withCredentials: true, params: { user_id: user_id } }).then(res => {
                 setUser(res.data)
                 console.log('Got user information.')
                 setUserLoaded(true)
@@ -32,7 +32,7 @@ function Review(review: ReviewI) {
             })
     
             // Get album
-            axios.get('/album', { params: { album_id: album_id } }).then(res => {
+            axios.get('/album', { withCredentials: true, params: { album_id: album_id } }).then(res => {
                 setAlbum(res.data)
                 console.log('Got album: ', res.data)
                 setAlbumLoaded(true)

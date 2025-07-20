@@ -17,15 +17,17 @@ function Home() {
     }, [])
 
     const checkAuthorization = () => {
-        axios.get('/isauth').then(res => {
-            setAuthorized(res.data)
+        axios.get('/isauth', { withCredentials: true }).then(res => {
+            // Backend now returns { authenticated: boolean }
+            setAuthorized(res.data.authenticated)
         }).catch(err => {
             console.error('Error getting /isauth: ' + err)
+            setAuthorized(false)
         })
     }
 
     const getReviews = () => {
-        axios.get('/reviews').then(res => {
+        axios.get('/reviews', { withCredentials: true }).then(res => {
             setReviews(res.data)
         }).catch(err => {
             console.error('Error getting all reviews: ', err)

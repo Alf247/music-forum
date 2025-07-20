@@ -7,8 +7,9 @@ function Auth() {
     const [link, setLink] = useState()
 
     const getLink = () => {
-        axios.get("/auth").then(res => {
-            setLink(res.data)
+        axios.get("/auth", { withCredentials: true }).then(res => {
+            // Backend now returns { authUrl: "spotify_auth_url" }
+            setLink(res.data.authUrl)
             console.log('Got authentication link.')
         }).catch(err => {
             console.error(`Error getting auth: ${err}`)
