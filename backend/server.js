@@ -5,7 +5,7 @@ const app = express()
 const port = process.env.PORT || 8080
 
 app.use(cors({
-    origin: ['http://localhost:3000', 'https://music-forum.onrender.com'],
+    origin: ['http://localhost:3000', 'http://localhost:3001', 'https://music-forum.onrender.com'],
     credentials: true
 }))
 
