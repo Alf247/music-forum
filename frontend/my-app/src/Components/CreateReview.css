@@ -15,6 +15,7 @@
 .two-thirds {
     display: flex;
     flex-direction: column;
+    width: 354px;
     margin: 0 20px;
     flex-grow: 2;
 }

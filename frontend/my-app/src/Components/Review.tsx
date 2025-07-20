@@ -48,7 +48,7 @@ function Review(review: ReviewI) {
             <a href={album['external_urls']['spotify']}>
                 <img className="album-cover" src={album['images']['0']['url']} alt="Cover of album" />
             </a>
-            <div className="two thirds">
+            <div className="two-thirds">
                 <div className="review-body">
                     <h2 className="album-title">{album['name']}</h2>
                     <span className="album-subtitle">({(album['release_date'] as string).slice(0,4) ?? 'N/A'}) by {album['artists'][0]['name']}</span>
