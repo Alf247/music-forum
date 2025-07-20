@@ -33,45 +33,37 @@ app.use(session({
 const SpotifyWebApi = require('spotify-web-api-node')
 const redirect = process.env.REDIRECT || 'https://localhost:8080/callback'
 
-// Helper function to get or create Spotify API instance for user
 const getSpotifyApi = (session) => {
-    console.log('getSpotifyApi called, session exists:', !!session)
+    console.log('Creating fresh Spotify API instance')
     
-    if (!session) {
-        throw new Error('No session provided to getSpotifyApi')
+    const spotifyApi = new SpotifyWebApi({
+        clientId: process.env.CLIENT_ID,
+        clientSecret: process.env.CLIENT_SECRET,
+        redirectUri: redirect
+    });
+    
+    // If we have stored tokens, set them on the fresh instance
+    if (session.accessToken) {
+        console.log('Setting stored access token')
+        spotifyApi.setAccessToken(session.accessToken);
     }
     
-    if (!session.spotifyApi) {
-        console.log('Creating new Spotify API instance')
-        try {
-            session.spotifyApi = new SpotifyWebApi({
-                clientId: process.env.CLIENT_ID,
-                clientSecret: process.env.CLIENT_SECRET,
-                redirectUri: redirect
-            });
-            console.log('Spotify API instance created with:', {
-                clientId: process.env.CLIENT_ID ? 'SET' : 'MISSING',
-                clientSecret: process.env.CLIENT_SECRET ? 'SET' : 'MISSING',
-                redirectUri: redirect
-            })
-        } catch (err) {
-            console.error('Error creating Spotify API instance:', err)
-            throw err
-        }
-    } else {
-        console.log('Using existing Spotify API instance')
+    if (session.refreshToken) {
+        console.log('Setting stored refresh token')
+        spotifyApi.setRefreshToken(session.refreshToken);
     }
     
-    return session.spotifyApi;
+    return spotifyApi;
 }
 
-// Middleware to check authentication
+// Updated middleware to check authentication
 const requireAuth = (req, res, next) => {
-    const spotifyApi = getSpotifyApi(req.session);
-    if (!spotifyApi.getAccessToken()) {
+    if (!req.session.accessToken) {
         return res.status(401).json({ error: 'Not authenticated' });
     }
-    req.spotifyApi = spotifyApi;
+    
+    // Create fresh API instance with stored tokens
+    req.spotifyApi = getSpotifyApi(req.session);
     next();
 }
 
@@ -143,19 +135,26 @@ const startServer = async() => {
         })
         
         // AUTHENTICATION
+        // Updated isauth endpoint
         app.get('/isauth', (req, res) => {
             console.log('GET /isauth hit');
-            const spotifyApi = getSpotifyApi(req.session);
-            res.json({ authenticated: !!spotifyApi.getAccessToken() })
+            const authenticated = !!req.session.accessToken;
+            console.log('User authenticated:', authenticated);
+            res.json({ authenticated })
         })
         
         app.get('/auth', (req, res) => {
-            const spotifyApi = getSpotifyApi(req.session);
+            const spotifyApi = new SpotifyWebApi({
+                clientId: process.env.CLIENT_ID,
+                clientSecret: process.env.CLIENT_SECRET,
+                redirectUri: redirect
+            });
+            
             const scopes = [
                 'user-read-private'
             ]
             
-            // Generate a state parameter for security
+            // Generate a state parameter for security (optional for now)
             const state = Math.random().toString(36).substring(2, 15);
             req.session.authState = state;
             
@@ -169,7 +168,6 @@ const startServer = async() => {
             console.log('Query params:', req.query)
             console.log('Session exists:', !!req.session)
             console.log('Session ID:', req.sessionID)
-            console.log('Session data:', req.session)
             
             const error = req.query.error
             const code = req.query.code
@@ -186,9 +184,12 @@ const startServer = async() => {
             }
             
             try {
-                console.log('Creating Spotify API instance...')
-                const spotifyApi = getSpotifyApi(req.session);
-                console.log('Spotify API instance created successfully')
+                console.log('Creating fresh Spotify API instance for callback...')
+                const spotifyApi = new SpotifyWebApi({
+                    clientId: process.env.CLIENT_ID,
+                    clientSecret: process.env.CLIENT_SECRET,
+                    redirectUri: redirect
+                });
                 
                 console.log('Starting token exchange...')
                 spotifyApi.authorizationCodeGrant(code)
@@ -198,11 +199,10 @@ const startServer = async() => {
                         const refreshToken = data.body['refresh_token']
                         const expiresIn = data.body['expires_in']
                         
-                        console.log('Setting tokens...')
-                        spotifyApi.setAccessToken(accessToken)
-                        spotifyApi.setRefreshToken(refreshToken)
-                        
-                        // Store token expiry time
+                        console.log('Storing tokens in session...')
+                        // Store tokens in session (not the API instance)
+                        req.session.accessToken = accessToken;
+                        req.session.refreshToken = refreshToken;
                         req.session.tokenExpiry = Date.now() + (expiresIn * 1000);
                         
                         console.log('Saving session...')
@@ -218,16 +218,10 @@ const startServer = async() => {
                     })
                     .catch(err => {
                         console.error('Token exchange error:', err)
-                        console.error('Error details:', {
-                            message: err.message,
-                            statusCode: err.statusCode,
-                            body: err.body
-                        })
                         res.status(500).send(`Token exchange failed: ${err.message}`)
                     })
             } catch (err) {
                 console.error('Callback error:', err)
-                console.error('Error stack:', err.stack)
                 res.status(500).send(`Callback error: ${err.message}`)
             }
         })
