@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Me from "./Me";
 import Auth from "./components/Auth";
 import Header from "./components/Header";
 import Review from "./components/Review";
@@ -47,7 +46,6 @@ function Home() {
                         created_at={item['created_at']}
                     />
                 ))}
-                <Me></Me>
             </>
 
         :
