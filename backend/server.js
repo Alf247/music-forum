@@ -160,7 +160,7 @@ const startServer = async() => {
         })
 
         app.get('/user', (req, res) => {
-            const id = req.data
+            const id = req.query.user_id
             spotifyApi.getUser(id).then(data => {
                 console.log('Got user: ', req.data)
                 res.send(data.body)
