@@ -21,6 +21,12 @@ const spotifyApi = new SpotifyWebApi({
     redirectUri: redirect
 });
 
+const calculateExpire = (expireTime) => {
+    expiresIn = Date.now() + 1000 * expireTime
+}
+
+const expiresIn = 0
+
 
 // DATABASE
 const pool = require('./database/database.js')
@@ -103,8 +109,20 @@ const startServer = async() => {
         }) */
         
         app.get('/isauth', (req, res) => {
-            console.log('GET /isauth hit');
-            res.send(spotifyApi.getAccessToken() ? true : false)
+            if (spotifyApi.getAccessToken()) {
+
+                if (Date.now() + 1000 * 60 * 5 > expiresIn) {
+                    spotifyApi.refreshAccessToken().then(data => {
+                        console.log('Access token has been refreshed.')
+                        calculateExpire(data.body['expires_in'])
+                        spotifyApi.setAccessToken(data.body['access_token'])
+                    }).catch(err => {
+                        console.error('Could not refresh access token: ', err)
+                    })
+                }
+
+            }
+            res.send(false)
         })
         
         app.get('/auth', (req, res) => {
@@ -135,9 +153,9 @@ const startServer = async() => {
             spotifyApi.authorizationCodeGrant(code).then(data => {
                 const accessToken = data.body['access_token']
                 const refreshToken = data.body['refresh_token']
-                const expiresIn = data.body['expires_in']
+                const expireTime = data.body['expires_in']
                 
-                console.log('The token expires in ' + expiresIn)
+                console.log('The token expires in ' + expireTime)
                 console.log('The access token is ' + accessToken)
                 console.log('The refresh token is ' + refreshToken)
                 
