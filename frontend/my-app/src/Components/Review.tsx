@@ -1,5 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
+import { numberToMonth } from "../util/util"
 import './Review.css'
 
 interface ReviewI {
@@ -25,7 +26,7 @@ function Review(review: ReviewI) {
         if (review) {
             axios.get('/user', { params: { user_id: user_id } }).then(res => {
                 setUser(res.data)
-                console.log('Got user information.')
+                console.log('Got user information: ', res.data)
                 setUserLoaded(true)
             }).catch(err => {
                 console.error('Error getting /user: ', err)
@@ -50,12 +51,27 @@ function Review(review: ReviewI) {
             </a>
             <div className="two-thirds">
                 <div className="review-body">
-                    <h2 className="album-title">{album['name']}</h2>
-                    <span className="album-subtitle">({(album['release_date'] as string).slice(0,4) ?? 'N/A'}) by {album['artists'][0]['name']}</span>
-                    <p className="date">{created_at}</p>
-                    <h3 className="review-rating">{rating}</h3>
-                    <p className="review-text">{reviewText}</p>
-                    <button>Edit</button>
+                    <div className="flex-space-between">
+
+                        <div className="flex-column-left">
+                            <h2 className="album-title">{(album['name'] as string).toUpperCase()}</h2>
+                            <span className="album-subtitle">  ({(album['release_date'] as string).slice(0,4) ?? 'N/A'}) by {album['artists'][0]['name']}</span>
+                            <br />
+                            <div className="inline-container">
+                                <img className="user-profile-picture" src={user['images']['0']['url']} alt="" />
+                                <div className="flex-column-left">
+                                    <p className="user-name">{user['display_name']}</p>
+                                    <p className="date">Listened {(created_at as string).slice(8, 10)} {numberToMonth((created_at as string).slice(5, 7))} {(created_at as string).slice(0, 4)}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 className="review-rating">{rating}</h3>
+
+                    </div>
+                    <div className="text-wrapper">
+                        <p className="review-text-card">{reviewText}</p>
+                    </div>
                 </div>
             </div>
         </div>

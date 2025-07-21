@@ -51,11 +51,11 @@ function CreateReview() {
                     <div className="two-thirds">
                         <div>
                             <h2 className="album-title">{(selected['name'] as string).toUpperCase()}</h2>
-                            <span className="album-subtitle">({(selected['release_date'] as string).slice(0,4) ?? 'N/A'}) by {selected['artists'][0]['name']}</span>
+                            <span className="album-subtitle">  ({(selected['release_date'] as string).slice(0,4) ?? 'N/A'}) by {selected['artists'][0]['name']}</span>
                         </div>
                         <br />
                         <input 
-                        className="review-rating" 
+                        className="review-rating-input" 
                         placeholder="1-10"
                         min="1" 
                         max="10" 

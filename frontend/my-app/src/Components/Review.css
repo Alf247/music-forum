@@ -3,6 +3,58 @@
     display: flex;
     flex: auto;
     margin: 30px 0px;
-    padding: 40px 40px;
+    padding: var(--entry_padding);
     border-radius: 5px;
+}
+
+.flex-space-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.flex-column-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.album-title {
+    text-align: left;
+    margin: 0px 0px;
+}
+
+
+.inline-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-profile-picture {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-name {
+    font-weight: bold;
+    margin: 0;
+}
+
+.date {
+    color: grey;
+    margin: 0;
+}
+
+.review-rating {
+    margin: 0;
+    font-size: 4rem;
+}
+
+.review-text-card {
+    text-align: left;
+    vertical-align:text-top;
+    height: 100%;
 }
