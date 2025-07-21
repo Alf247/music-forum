@@ -139,7 +139,7 @@ const startServer = async() => {
                 'user-read-private'
             ]
             
-            res.send(spotifyApi.createAuthorizeURL(scopes, "", false))
+            res.send(spotifyApi.createAuthorizeURL(scopes, "", true))
         })
         
         app.get('/callback', (req, res) => {
