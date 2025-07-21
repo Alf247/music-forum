@@ -69,8 +69,11 @@ function Review(review: ReviewI) {
                         <h3 className="review-rating">{rating}</h3>
 
                     </div>
-                    <div className="text-wrapper">
-                        <p className="review-text-card">{reviewText}</p>
+                    <div className="inline-container">
+                        <div style={{width: '40px', visibility: 'hidden'}}>JUST IGNORE THIS</div>
+                        <div className="text-wrapper">
+                            <p className="review-text-card">{reviewText}</p>
+                        </div>
                     </div>
                 </div>
             </div>
