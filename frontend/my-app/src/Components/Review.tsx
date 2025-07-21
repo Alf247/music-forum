@@ -26,7 +26,7 @@ function Review(review: ReviewI) {
         if (review) {
             axios.get('/user', { params: { user_id: user_id } }).then(res => {
                 setUser(res.data)
-                console.log('Got user information: ', res.data)
+                console.log('Got user information for review.')
                 setUserLoaded(true)
             }).catch(err => {
                 console.error('Error getting /user: ', err)
@@ -35,7 +35,7 @@ function Review(review: ReviewI) {
             // Get album
             axios.get('/album', { params: { album_id: album_id } }).then(res => {
                 setAlbum(res.data)
-                console.log('Got album: ', res.data)
+                console.log('Got album for review.')
                 setAlbumLoaded(true)
             }).catch(err => {
                 console.log('Error getting album: ', err)
