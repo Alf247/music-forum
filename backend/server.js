@@ -112,7 +112,9 @@ const startServer = async() => {
             if (spotifyApi.getAccessToken()) {
 
                 if (Date.now() + 1000 * 60 * 5 > expiresIn) {
-                    spotifyApi.refreshAccessToken().then(data => {
+                    res.send(false)
+
+                    /* spotifyApi.refreshAccessToken().then(data => {
                         console.log('Access token has been refreshed.')
                         calculateExpire(data.body['expires_in'])
                         spotifyApi.setAccessToken(data.body['access_token'])
@@ -120,8 +122,10 @@ const startServer = async() => {
                     }).catch(err => {
                         console.error('Could not refresh access token: ', err)
                         res.send(false)
-                    })
+                    }) */
                 }
+
+                res.send(true)
 
             }
             res.send(false)
