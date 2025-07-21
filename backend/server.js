@@ -109,26 +109,29 @@ const startServer = async() => {
         }) */
         
         app.get('/isauth', (req, res) => {
-            if (spotifyApi.getAccessToken()) {
+            /* spotifyApi.refreshAccessToken().then(data => {
+                console.log('Access token has been refreshed.')
+                calculateExpire(data.body['expires_in'])
+                spotifyApi.setAccessToken(data.body['access_token'])
+                res.send(true)
+            }).catch(err => {
+                console.error('Could not refresh access token: ', err)
+                res.send(false)
+            }) */
+
+            /* if (spotifyApi.getAccessToken()) {
 
                 if (Date.now() + 1000 * 60 * 5 > expiresIn) {
                     res.send(false)
 
-                    /* spotifyApi.refreshAccessToken().then(data => {
-                        console.log('Access token has been refreshed.')
-                        calculateExpire(data.body['expires_in'])
-                        spotifyApi.setAccessToken(data.body['access_token'])
-                        res.send(true)
-                    }).catch(err => {
-                        console.error('Could not refresh access token: ', err)
-                        res.send(false)
-                    }) */
                 }
 
                 res.send(true)
 
             }
-            res.send(false)
+            res.send(false) */
+
+            res.send(spotifyApi.getAccessToken() ? true : false)
         })
         
         app.get('/auth', (req, res) => {
