@@ -116,8 +116,10 @@ const startServer = async() => {
                         console.log('Access token has been refreshed.')
                         calculateExpire(data.body['expires_in'])
                         spotifyApi.setAccessToken(data.body['access_token'])
+                        res.send(true)
                     }).catch(err => {
                         console.error('Could not refresh access token: ', err)
+                        res.send(false)
                     })
                 }
 
