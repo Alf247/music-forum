@@ -50,30 +50,37 @@ function Review(review: ReviewI) {
                 <img className="album-cover" src={album['images']['0']['url']} alt="Cover of album" />
             </a>
             <div className="two-thirds">
-                <div className="review-body">
-                    <div className="flex-space-between">
+                <div className="flex-space-between">
+                    <div className="flex-column-left">
 
-                        <div className="flex-column-left">
-                            <h2 className="album-title">{(album['name'] as string).toUpperCase()}</h2>
-                            <span className="album-subtitle">  ({(album['release_date'] as string).slice(0,4) ?? 'N/A'}) by {album['artists'][0]['name']}</span>
-                            <br />
-                            <div className="inline-container">
-                                <img className="user-profile-picture" src={user['images']['0']['url']} alt="" />
-                                <div className="flex-column-left">
-                                    <p className="user-name">{user['display_name']}</p>
-                                    <p className="date">Listened {(created_at as string).slice(8, 10)} {numberToMonth((created_at as string).slice(5, 7))} {(created_at as string).slice(0, 4)}</p>
-                                </div>
+
+                        <h2 className="album-title">{(album['name'] as string).toUpperCase()}</h2>
+                        <span className="album-subtitle">  ({(album['release_date'] as string).slice(0,4) ?? 'N/A'}) by {album['artists'][0]['name']}</span>
+
+
+                        <br />
+                        <div className="inline-container">
+
+
+                            <img className="user-profile-picture" src={user['images']['0']['url']} alt="" />
+                            <div className="flex-column-left">
+                                <p className="user-name">{user['display_name']}</p>
+                                <p className="date">Listened {(created_at as string).slice(8, 10)} {numberToMonth((created_at as string).slice(5, 7))} {(created_at as string).slice(0, 4)}</p>
                             </div>
+
+
                         </div>
-
-                        <h3 className="review-rating">{rating}</h3>
-
                     </div>
-                    <div className="inline-container">
-                        <div style={{width: '40px', visibility: 'hidden'}}>JUST IGNORE THIS</div>
-                        <div className="text-wrapper">
-                            <p className="review-text-card">{reviewText}</p>
-                        </div>
+
+                    <h3 className="review-rating">{rating}</h3>
+
+                </div>
+
+
+                <div className="inline-container">
+                    <div style={{width: '40px', visibility: 'hidden'}}>JUST IGNORE THIS</div>
+                    <div className="text-wrapper">
+                        <p className="review-text-card">{reviewText}</p>
                     </div>
                 </div>
             </div>
