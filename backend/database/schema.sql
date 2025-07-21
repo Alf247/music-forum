@@ -1,3 +1,5 @@
+SET time_zone = 'Europe/Oslo'
+
 CREATE TABLE IF NOT EXISTS reviews (
     id SERIAL PRIMARY KEY,
     user_id TEXT NOT NULL,
