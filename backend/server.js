@@ -193,7 +193,7 @@ const startServer = async() => {
                 res.send(data.body)
             }).catch(err => {
                 console.error('Error getting user: ', err)
-                res.status(401).send()
+                res.status(401).send('Error getting user: ', err)
             })
         })
         
@@ -205,7 +205,7 @@ const startServer = async() => {
                 res.send(data.body)
             }).catch(err => {
                 console.error('Error getting /album: ', err)
-                res.status(401).send('Error getting /album: ', err)
+                res.status(401).send('Error getting album: ', err)
             })
         })
         
