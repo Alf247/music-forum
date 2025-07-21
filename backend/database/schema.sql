@@ -1,12 +1,10 @@
-SET time_zone = 'Europe/Oslo';
-
 CREATE TABLE IF NOT EXISTS reviews (
     id SERIAL PRIMARY KEY,
     user_id TEXT NOT NULL,
     album TEXT NOT NULL,
     rating INTEGER,
     review TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CONVERT_TZ(NOW(), 'UTC', 'Europe/Oslo')
 );
 
 -- Create indexes for better performance
