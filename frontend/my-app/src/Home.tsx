@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Auth from "./components/Auth";
 import Header from "./components/Header";
 import Review from "./components/Review";
+import Footer from "./components/Footer";
 import "./Home.css"
 
 
@@ -49,6 +50,7 @@ function Home() {
                         />
                     ))}
                 </div>
+                <Footer/>
             </>
 
         :

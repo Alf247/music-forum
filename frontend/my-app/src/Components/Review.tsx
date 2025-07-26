@@ -43,52 +43,72 @@ function Review(review: ReviewI) {
         }
     }, [])
 
-    return (
-        (userLoaded && albumLoaded) ? 
-        <div className="review">
-            <a href={album['external_urls']['spotify']} target="__blank">
-                <img className="album-cover" src={album['images']['0']['url']} alt="Cover of album" />
-            </a>
-            <div className="two-thirds">
-                <div className="flex-space-between">
-                    <div className="flex-column-left">
+    if (!review.rating && !review.reviewText) {
+        return (
+            <div className="review">
+                <p>{user['display_name']} listened to <b>{album['name']}</b> ({(album['release_date'] as string).slice(0,4)}) by {album['artists'][0]['name']}, <i>{(created_at as string).slice(8, 10)} {numberToMonth((created_at as string).slice(5, 7))} {(created_at as string).slice(0, 4)}</i></p>
+            </div>
+        )
+    }
 
+    else if (!review.reviewText) {
+        return (
+            <div className="review">
+                <p>{user['display_name']} rated <b>{album['name']}</b> ({(album['release_date'] as string).slice(0,4)}) by {album['artists'][0]['name']} <b>{rating}/10</b>, <i>{(created_at as string).slice(8, 10)} {numberToMonth((created_at as string).slice(5, 7))} {(created_at as string).slice(0, 4)}</i></p>
+            </div>
+        )
+    }
 
-                        <h2 className="album-title">{(album['name'] as string).toUpperCase()}</h2>
-                        <span className="album-subtitle">  ({(album['release_date'] as string).slice(0,4) ?? 'N/A'}) by {album['artists'][0]['name']}</span>
+    else {
 
-
-                        <br />
-                        <div className="inline-container">
-
-
-                            <img className="user-profile-picture" src={user['images']['0']['url']} alt="" />
-                            <div className="flex-column-left">
-                                <p className="user-name">{user['display_name']}</p>
-                                <p className="date">Listened {(created_at as string).slice(8, 10)} {numberToMonth((created_at as string).slice(5, 7))} {(created_at as string).slice(0, 4)}</p>
+        return (
+            (userLoaded && albumLoaded) ? 
+            <div className="review">
+                <a href={album['external_urls']['spotify']} target="__blank">
+                    <img className="album-cover" src={album['images']['0']['url']} alt="Cover of album" />
+                </a>
+                <div className="two-thirds">
+                    <div className="flex-space-between">
+                        <div className="flex-column-left">
+    
+    
+                            <h2 className="album-title">{(album['name'] as string).toUpperCase()}</h2>
+                            <span className="album-subtitle">  ({(album['release_date'] as string).slice(0,4) ?? 'N/A'}) by {album['artists'][0]['name']}</span>
+    
+    
+                            <br />
+                            <div className="inline-container">
+    
+    
+                                <img className="user-profile-picture" src={user['images']['0']['url']} alt="" />
+                                <div className="flex-column-left">
+                                    <p className="user-name">{user['display_name']}</p>
+                                    <p className="date">Listened {(created_at as string).slice(8, 10)} {numberToMonth((created_at as string).slice(5, 7))} {(created_at as string).slice(0, 4)}</p>
+                                </div>
+    
+    
                             </div>
-
-
                         </div>
+    
+                        <h3 className="review-rating">{rating}</h3>
+    
                     </div>
-
-                    <h3 className="review-rating">{rating}</h3>
-
-                </div>
-
-
-                <div className="inline-container">
-                    <div style={{width: '40px', visibility: 'hidden'}}>JUST IGNORE THIS</div>
-                    <div className="text-wrapper">
-                        <p className="review-text-card">{reviewText}</p>
+    
+    
+                    <div className="inline-container">
+                        <div style={{width: '40px', visibility: 'hidden'}}>JUST IGNORE THIS</div>
+                        <div className="text-wrapper">
+                            <p className="review-text-card">{reviewText}</p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+    
+            :
+            <></>
+        )
+    }
 
-        :
-        <></>
-    )
 }
 
 export default Review
