@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Auth from "./components/Auth";
 import Header from "./components/Header";
 import Review from "./components/Review";
+import "./Home.css"
 
 
 function Home() {
@@ -36,16 +37,18 @@ function Home() {
         authorized ?
             <>
                 <Header/>
-                {reviews.map((item, index) => (
-                    <Review 
-                        key={index}
-                        user_id={item['user_id']}
-                        album_id={item['album']}
-                        rating={item['rating']}
-                        reviewText={item['review']}
-                        created_at={item['created_at']}
-                    />
-                ))}
+                <div className="main-content">
+                    {reviews.map((item, index) => (
+                        <Review 
+                            key={index}
+                            user_id={item['user_id']}
+                            album_id={item['album']}
+                            rating={item['rating']}
+                            reviewText={item['review']}
+                            created_at={item['created_at']}
+                        />
+                    ))}
+                </div>
             </>
 
         :
