@@ -45,17 +45,23 @@ function Review(review: ReviewI) {
 
     if (!review.rating && !review.reviewText) {
         return (
+            (userLoaded && albumLoaded) ? 
             <div className="review">
                 <p>{user['display_name']} listened to <b>{album['name']}</b> ({(album['release_date'] as string).slice(0,4)}) by {album['artists'][0]['name']}, <i>{(created_at as string).slice(8, 10)} {numberToMonth((created_at as string).slice(5, 7))} {(created_at as string).slice(0, 4)}</i></p>
             </div>
+            :
+            <></>
         )
     }
 
     else if (!review.reviewText) {
         return (
+            (userLoaded && albumLoaded) ? 
             <div className="review">
                 <p>{user['display_name']} rated <b>{album['name']}</b> ({(album['release_date'] as string).slice(0,4)}) by {album['artists'][0]['name']} <b>{rating}/10</b>, <i>{(created_at as string).slice(8, 10)} {numberToMonth((created_at as string).slice(5, 7))} {(created_at as string).slice(0, 4)}</i></p>
             </div>
+            :
+            <></>
         )
     }
 
