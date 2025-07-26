@@ -46,7 +46,7 @@ function Review(review: ReviewI) {
     return (
         (userLoaded && albumLoaded) ? 
         <div className="review">
-            <a href={album['external_urls']['spotify']}>
+            <a href={album['external_urls']['spotify']} target="__blank">
                 <img className="album-cover" src={album['images']['0']['url']} alt="Cover of album" />
             </a>
             <div className="two-thirds">
